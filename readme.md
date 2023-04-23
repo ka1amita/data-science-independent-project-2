@@ -2,8 +2,8 @@
 
 ## Analyzing the Data:
 
-- [ ] Which tracks appeared in the most playlists? how many playlist did they appear in?
-- [solution](/task-01.csv)
+- [X] Which tracks appeared in the most playlists? how many playlist did they appear in?
+- multiple tracks have the same number of apperances (5). LIst of those exported to a [csv file](/task-01.csv)
 - [ ] Which track generated the most revenue? which album? which genre?
 - [ ] Which countries have the highest sales revenue? What percent of total revenue does each country make up?
 - [ ] How many customers did each employee support, what is the average revenue for each sale, and what is their total sale?
