@@ -10,7 +10,7 @@ SELECT
 	count(PlaylistId)
 FROM
 	playlist_track
-group BY
+GROUP BY
 	1
 HAVING count(PlaylistId)  = 5
 ORDER BY 
