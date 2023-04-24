@@ -142,5 +142,42 @@ ORDER BY 1 DESC
 
 # Advanced Challenge
 
-- [ ] How much revenue is generated each year, and what is its percent change from the previous year?[^3]
+- [X] How much revenue is generated each year, 
+
+|year|sum|
+|---|---|
+|2009|449.46|
+|2010|	481.45|
+|2011|	469.58|
+|2012|	477.53|
+|2013|	450.58|
+
+and what is its percent change from the previous year?[^3]
+
+```sql
+WITH thisYearTotals AS (
+SELECT DISTINCT CAST (strftime('%Y', InvoiceDate)  AS INT) as "Year", sum(total) as 'summ'
+from invoices
+GROUP BY 1
+),
+
+lastYearTotals AS (
+SELECT DISTINCT CAST(strftime('%Y', InvoiceDate) +1 AS INT) as "Year", sum(total) as 'summ'
+from invoices
+GROUP BY 1
+)
+
+select thisYearTotals.Year, round(100*(thisYearTotals.summ - lastYearTotals.summ)/lastYearTotals.summ, 1) AS 'percent Change'
+from thisYearTotals
+CROSS JOIN lastYearTotals
+where thisYearTotals.Year = lastYearTotals.Year
+;
+```
+|year|percent change|
+|---|---|
+|2010|	7.1|
+|2011|	-2.5|
+|2012|	1.7|
+|2013|	-5.6|
+
 [^3]: Hint: The `InvoiceDate` field is formatted as ‘yyyy-mm-dd hh:mm:ss’. Try taking a look at using the strftime() function to help extract just the year. Then, we can use a subquery in the `SELECT` statement to query the total revenue from the previous year. Remember that strftime() returns the date as a string, so we would need to `CAST` it to an integer type for this part. Finally, since we cannot refer to a column alias in the `SELECT` statement, it may be useful to use the `WITH` clause to query the previous year total in a temporary table, and then calculate the percent change in the final `SELECT` statement.
