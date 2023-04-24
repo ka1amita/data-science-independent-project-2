@@ -3,22 +3,53 @@
 ## Analyzing the Data:
 
 - [X] Which tracks appeared in the most playlists? how many playlist did they appear in?
-- multiple tracks have the same number of apperances (5). LIst of those exported to a [csv file](/task-01.csv)
+
+multiple tracks have the same number of apperances (5). LIst of those exported to a [csv file](/task-01.csv)
 ``` sql
-SELECT
-	TrackId,
-	count(PlaylistId)
-FROM
-	playlist_track
-GROUP BY
-	1
-HAVING count(PlaylistId)  = 5
-ORDER BY 
-	2 DESC
+SELECT TrackId, COUNT(PlaylistId)
+FROM playlist_track
+GROUP BY 1
+HAVING COUNT(PlaylistId) = 5
+ORDER BY 2 DESC
 ;
 ```
-- [ ] Which track generated the most revenue? which album? which genre?
-- 
+- [X] Which track generated the most revenue?
+```sql
+SELECT name, UnitPrice
+FROM tracks
+WHERE UnitPrice = (SELECT max(UnitPrice) FROM tracks)
+;	
+```
+- ...which album?
+```sql
+WITH previous_result AS (
+	SELECT AlbumId, sum(UnitPrice) AS 'price'
+	FROM tracks
+	GROUP BY AlbumId
+	ORDER BY 2 DESC
+	LIMIT 1
+	)
+SELECT previous_result.price , albums.AlbumId,  albums.Title
+FROM previous_result
+JOIN albums
+ON previous_result.AlbumId = albums.AlbumId
+;
+```
+- ...which genre?
+```sql
+WITH result AS (
+	SELECT GenreId, sum(UnitPrice) AS 'total'
+	FROM tracks
+	GROUP BY GenreId
+	ORDER BY 2 DESC
+	LIMIT 1
+	)
+SELECT result.GenreId, genres.name, result.total
+FROM result
+JOIN genres
+ON result.GenreId = genres.GenreId
+;
+```
 - [ ] Which countries have the highest sales revenue? What percent of total revenue does each country make up?
 - [ ] How many customers did each employee support, what is the average revenue for each sale, and what is their total sale?
 
