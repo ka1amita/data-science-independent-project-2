@@ -105,9 +105,15 @@ GROUP BY employees.EmployeeId
 
 ## Intermediate Challenge
 
-- [ ] Do longer or shorter length albums tend to generate more revenue?[^1]
+- [X] Do longer or shorter length albums tend to generate more revenue?[^1]
+
+Longer.
+
 [^1]: Hint: We can use the WITH clause to create a temporary table that determines the number of tracks in each album, then group by the length of the album to compare the average revenue generated for each.
-- [ ] Is the number of times a track appear in any playlist a good indicator of sales?[^2]
+- [X] Is the number of times a track appear in any playlist a good indicator of sales?[^2]
+
+
+
 [^2]: Hint: We can use the WITH clause to create a temporary table that determines the number of times each track appears in a playlist, then group by the number of times to compare the average revenue generated for each.
 
 # Advanced Challenge
