@@ -50,9 +50,57 @@ JOIN genres
 ON result.GenreId = genres.GenreId
 ;
 ```
-- [ ] Which countries have the highest sales revenue? What percent of total revenue does each country make up?
-- [ ] How many customers did each employee support, what is the average revenue for each sale, and what is their total sale?
+- [X] Which countries have the highest sales revenue? What percent of total revenue does each country make up?
+```sql
+SELECT BillingCountry, sum(total) as 'summ', 100*sum(total)/(SELECT sum(total) from invoices)
+FROM invoices
+GROUP BY BillingCountry
+Order BY summ DESC
+LIMIT 10
+;
+```
+- [X] How many customers did each employee support, 
+```sql
+WITH result AS (
+SELECT SupportRepId, sum(CustomerId) AS 'summ'
+FROM customers
+GROUP BY SupportRepId
+ORDER BY 2 DESC
+)
+SELECT employees.LastName, result.summ
+FROM result
+JOIN employees
+ON result.SupportRepId = employees.EmployeeId
+;
+```
+what is the average revenue for each sale, 
+```sql
+SELECT round(avg(total))
+FROM invoices
+;
+```
+and what is their total sale?
 
+|rank|employee's last name|total sale|
+|---|---|---|
+|1|Peacock|833|
+|2|Park|775|
+|3|Johnson|720|
+
+```sql
+WITH result AS (select *
+FROM invoices
+JOIN customers
+ON invoices.CustomerId = customers.CustomerId
+)
+
+SELECT employees.LastName, round(total(result.total),0)
+FROM result
+JOIN employees
+ON result.SupportRepId = employees.EmployeeId
+GROUP BY employees.EmployeeId
+;
+```
 # Additional Challenges
 
 ## Intermediate Challenge
