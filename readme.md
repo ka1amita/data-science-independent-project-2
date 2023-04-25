@@ -156,7 +156,7 @@ and what is its percent change from the previous year?[^3]
 
 ```sql
 WITH thisYearTotals AS (
-SELECT DISTINCT CAST (strftime('%Y', InvoiceDate)  AS INT) as "Year", sum(total) as 'summ'
+SELECT DISTINCT CAST(strftime('%Y', InvoiceDate)  AS INT) as "Year", sum(total) as 'summ'
 from invoices
 GROUP BY 1
 ),
